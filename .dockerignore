@@ -1,5 +1,5 @@
-src/frontend/dist
-src/frontend/node_modules
-src/data
+frontend/dist
+frontend/node_modules
+backend/data
 venv
 .env
