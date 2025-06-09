@@ -15,6 +15,10 @@ class RefreshTokenView(TokenRefreshView):
 @api_view(['GET'])
 def current_user(request):
     user = request.user
+    if user.is_anonymous:
+        return Response({
+            "message": "No User logged in"
+        }, status=401)
     return Response({
         'username': user.username,
         'email': user.email,
