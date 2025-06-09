@@ -1,5 +1,26 @@
+# Frontend
 frontend/dist
 frontend/node_modules
+frontend/.vscode
+frontend/README.md
+
+# Backend
 backend/data
+backend/static
+backend/*.pyc
+backend/__pycache__
+backend/*.sqlite3
+
+# Development
 venv
 .env
+.idea
+.vscode
+.git
+.gitignore
+*.md
+*.log
+*.swp
+*.swo
+*.bak
+*.tmp

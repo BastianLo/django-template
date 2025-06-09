@@ -6,10 +6,10 @@ services:
       - PASSWORD=admin
       - EMAIL=admin@admin.de
       - DEBUG=True
-      - APP_URL=127.0.0.1:6753
+      - APP_URL=http://127.0.0.1:6753
       - TIMEZONE=Europe/Berlin
     ports:
       - '6753:6753'
     image: 'templateapplication:localdev'
     volumes:
-      - ./data:/App/backend/data
+      - ./data:/app/data

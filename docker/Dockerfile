@@ -1,41 +1,42 @@
-FROM nikolaik/python-nodejs:python3.13-nodejs24
+# Build stage for frontend
+FROM node:24-alpine as frontend-builder
+WORKDIR /app
+COPY frontend/package.json frontend/package-lock.json ./
+RUN npm install
+COPY frontend .
+RUN npm run build
+
+# Build stage for backend
+FROM python:3.13-alpine as backend-builder
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+COPY backend .
+RUN python manage.py collectstatic --noinput
+
+
+# Final stage
+FROM python:3.13-alpine
 LABEL authors="bastianlobe"
 
-# Install Nginx web server
-RUN apt-get update && \
-    apt-get install -y nginx gettext && \
-    rm -rf /var/lib/apt/lists/*
+# Install runtime dependencies
+RUN apk add --no-cache nginx gettext py3-gunicorn && \
+    mkdir -p /app  /usr/share/nginx/html /app/data
 
-# Create a directory for the Django project
-RUN mkdir App
-COPY requirements.txt /App/
+# Copy built artifacts and Python dependencies
+COPY --from=frontend-builder /app/dist /usr/share/nginx/html
+COPY --from=backend-builder /app /app
+COPY --from=backend-builder /usr/local/lib/python3.13/site-packages /usr/local/lib/python3.13/site-packages
+COPY --from=backend-builder /usr/local/bin /usr/local/bin
 
-WORKDIR /App
-
-### Install dependencies ###
-# Python
-RUN pip install --upgrade pip
-RUN pip install -r requirements.txt
-# npm
-COPY frontend/package.json /App/frontend/
-COPY frontend/package-lock.json /App/frontend/
-RUN npm --prefix /App/frontend install
-
-### Copy project files ###
-COPY nginx.conf /etc/nginx/sites-available/default
+# Configure nginx
+COPY nginx.conf /etc/nginx/http.d/default.conf
 COPY scripts /scripts
-COPY backend backend
-COPY frontend frontend
 
-# Create a directory for static files
-RUN mkdir /static
+# Create necessary directories
+RUN mkdir -p /app/data/media
 
-RUN npm --prefix /App/frontend run build
-#Move files to nginx directory, so nginx can access them
-RUN mv /App/frontend/dist/* /usr/share/nginx/html/
+WORKDIR /app
 
-# Expose port 6753 for the container
 EXPOSE 6753
-
-# Run the boot.sh script when the container starts
 ENTRYPOINT ["/scripts/entrypoint.sh"]

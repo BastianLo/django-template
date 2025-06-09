@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 create-superuser () {
     local username="$1"
     local email="$2"
@@ -14,11 +14,13 @@ else:
     print('User "{}" exists already, not created'.format("$username"))
 EOF
 }
-service nginx start
 
-# Collect static files and run migrations
-cd backend
-python manage.py collectstatic --noinput && python manage.py migrate
+# Start nginx (Alpine uses openrc)
+nginx
+
+# Run migrations
+cd /app
+python manage.py migrate
 
 create-superuser ${USERNAME:-admin} ${EMAIL:-admin@admin.de} ${PASSWORD:-changeme}
 django-admin compilemessages > /dev/null 2>&1
