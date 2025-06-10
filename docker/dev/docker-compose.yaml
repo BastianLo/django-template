@@ -1,5 +1,5 @@
 services:
-  hello-meals:
+  django-template:
     container_name: django-template
     environment:
       - USERNAME=admin
