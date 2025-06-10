@@ -39,9 +39,9 @@ STATICFILES_DIRS = [BASE_DIR / "static"]
 # Application definition
 
 CSRF_TRUSTED_ORIGINS = [
-    # 'http://localhost:6733',
-    # 'http://127.0.0.1:6733',
-    os.getenv('APP_URL') if os.getenv('APP_URL') else 'http://127.0.0.1:6733',
+    'http://localhost:6753',
+    'http://127.0.0.1:6753',
+    os.getenv('APP_URL') if os.getenv('APP_URL') else 'http://127.0.0.1:6753',
     'http://localhost:5173',
     'http://127.0.0.1:5173',
 ]
