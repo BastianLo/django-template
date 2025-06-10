@@ -1,0 +1,38 @@
+
+
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Run Backend",
+            "command": "python3 backend/manage.py runserver 8081",
+            "request": "launch",
+            "type": "node-terminal"
+        },
+        {
+            "name": "Run Frontend",
+            "command": "npm run dev --prefix frontend",
+            "request": "launch",
+            "type": "node-terminal"
+        },
+        {
+            "name": "Docker build",
+            "command": "docker build -t ${workspaceFolderBasename}:localdev -f docker/Dockerfile .",
+            "request": "launch",
+            "type": "node-terminal"
+        },
+        {
+            "name": "Docker build and run",
+            "command": "docker build -t ${workspaceFolderBasename}:localdev -f docker/Dockerfile . && docker rm -f ${workspaceFolderBasename} && docker run  -p 6753:6753 --name ${workspaceFolderBasename}  ${workspaceFolderBasename}:localdev",
+            "request": "launch",
+            "type": "node-terminal"
+        },
+        {
+            "name": "Docker build and run compose",
+            "command": "docker build -t ${workspaceFolderBasename}:localdev -f docker/Dockerfile . && docker rm -f ${workspaceFolderBasename} && docker-compose -f docker/dev/docker-compose.yaml up",
+            "request": "launch",
+            "type": "node-terminal"
+        },
+    ]
+}
+
