@@ -15,8 +15,7 @@ export default async function authorizedFetch(url: string, options: RequestInit 
     return fetch_response;
 }
 
-export const useCommonStore = defineStore({
-    id: 'commonStore',
+export const useCommonStore = defineStore("commonStore", {
     state: () => ({
         request_fetching: false,
         router: useRouter(),

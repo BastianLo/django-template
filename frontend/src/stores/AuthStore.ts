@@ -3,8 +3,7 @@ import authorizedFetch from "@/stores/CommonStore";
 
 const baseUrl = import.meta.env.DEV ? 'http://localhost:8081/api' : window.location.origin + "/api"
 
-export const useAuthStore = defineStore({
-    id: 'auth',
+export const useAuthStore = defineStore("authStore", {
     state: () => ({
         access_token: localStorage.getItem("access_token") || "",
         refresh_token: localStorage.getItem("refresh_token") || "",
@@ -59,7 +58,6 @@ export const useAuthStore = defineStore({
                     "Content-Type": "application/json",
                 }
             })
-            console.log(response)
             this.set_access_token(null)
             this.set_refresh_token(null)
             this.set_user(null)
@@ -78,7 +76,6 @@ export const useAuthStore = defineStore({
             })
             const jsonResponse = await response.json()
             if (response.ok) {
-                console.log(jsonResponse)
                 this.set_access_token(jsonResponse.access)
                 this.set_refresh_token(jsonResponse["refresh"])
                 await this.get_user_information()
