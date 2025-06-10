@@ -26,4 +26,4 @@ create-superuser ${USERNAME:-admin} ${EMAIL:-admin@admin.de} ${PASSWORD:-changem
 django-admin compilemessages > /dev/null 2>&1
 echo 'Starting application'
 #TODO: Increase worker amount. Currently bugged with scraper thread. Scraper threading needs to be fixed first
-gunicorn --bind :6734 --workers 1 --preload templateApplication.wsgi
+gunicorn --bind :6734 --workers 1 --preload main.wsgi
