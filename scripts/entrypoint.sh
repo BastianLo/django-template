@@ -15,7 +15,7 @@ else:
 EOF
 }
 
-# Start nginx (Alpine uses openrc)
+# Start nginx
 nginx
 
 # Run migrations
@@ -25,5 +25,4 @@ python manage.py migrate
 create-superuser ${USERNAME:-admin} ${EMAIL:-admin@admin.de} ${PASSWORD:-changeme}
 django-admin compilemessages > /dev/null 2>&1
 echo 'Starting application'
-#TODO: Increase worker amount. Currently bugged with scraper thread. Scraper threading needs to be fixed first
 gunicorn --bind :6734 --workers 1 --preload main.wsgi
