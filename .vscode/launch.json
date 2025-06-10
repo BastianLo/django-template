@@ -5,9 +5,15 @@
     "configurations": [
         {
             "name": "Run Backend",
-            "command": "python3 backend/manage.py runserver 8081",
+            "type": "debugpy",
             "request": "launch",
-            "type": "node-terminal"
+            "program": "${workspaceFolder}/backend/manage.py",
+            "args": [
+                "runserver",
+                "8081",
+            ],
+            "console": "integratedTerminal",
+            "django": true
         },
         {
             "name": "Run Frontend",
